@@ -1,12 +1,13 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { enviroment } from 'environments/environment';
-import { map } from 'rxjs';
+import { environment } from 'environments/environment';
+import { map, tap, Observable } from 'rxjs';
 import { CustomerInterface } from '../data/types/customer.interface';
+import { RequestCustomerInterface } from '../data/types/request-customer-interface';
 import { ResponseCustomerInterface } from '../data/types/response-customer.interface';
 
 
-const url = `${enviroment.apiUrl}/customers`;
+const url = `${environment.apiUrl}/customers`;
 const httpOptions = {headers: new HttpHeaders({'Content-Type': 'aplication/json'})};
 
 @Injectable({
@@ -18,11 +19,9 @@ export class HttpService {
 
   constructor(private http: HttpClient) { }
 
-  createData(customer: CustomerInterface): void{
-    this.http.post<ResponseCustomerInterface>(`${url}.json`, customer, httpOptions)
-    .subscribe(res => {
-      console.log(res);
-    });
+  createData(customer: CustomerInterface): Observable<RequestCustomerInterface> {
+    return this.http.post<RequestCustomerInterface>(`${url}.json`, customer, httpOptions)
+      .pipe(tap(res => this.customers.push({...{key: res.name}, ...customer})));
   }
 
   getData(): void{
@@ -36,7 +35,7 @@ export class HttpService {
     )
     .subscribe({
       next: (res: CustomerInterface[]) => {
-        console.log(res);
+        this.customers = res;
       },
       error: err => console.log(err)
     });

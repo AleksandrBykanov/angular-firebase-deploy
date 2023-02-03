@@ -9,7 +9,7 @@ import { HttpService } from 'src/app/shared/services/http.service';
 })
 export class CustomersListComponent implements OnInit{
 
-  constructor(private httpService: HttpService) {}
+  constructor(public httpService: HttpService) {}
 
   ngOnInit() {
     this.httpService.getData()

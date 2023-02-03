@@ -6,7 +6,7 @@ import { CustomersHostComponent } from './components/customers-host/customers-ho
 import { CustomersListComponent } from './components/customers-list/customers-list.component';
 import { CustomersDetailsComponent } from './components/customers-details/customers-details.component';
 import { HttpClientModule } from '@angular/common/http';
-
+import { ReactiveFormsModule} from '@angular/forms';
 
 
 
@@ -15,11 +15,12 @@ import { HttpClientModule } from '@angular/common/http';
     AppComponent,
     CustomersHostComponent,
     CustomersListComponent,
-    CustomersDetailsComponent,  
+    CustomersDetailsComponent,
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
+    ReactiveFormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
