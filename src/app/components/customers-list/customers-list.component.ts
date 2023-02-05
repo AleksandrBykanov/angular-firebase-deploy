@@ -40,12 +40,16 @@ export class CustomersListComponent implements OnInit{
     this.resetEditStatus();
   }
 
-  saveCustomer(): void{
-    console.log(this.tempCustomer);
+  saveCustomer(customer: CustomerInterface, i: number): void{
+    const mergedCustomer = this.mergeCustomerProps(customer, this.tempCustomer);
+    this.httpService.updateData(mergedCustomer, i);
     this.resetEditStatus();
+
   }
 
-  deleteCustomer(): void{}
+  deleteCustomer(customer: CustomerInterface): void{
+    this.httpService.deleteData(customer);
+  }
 
   private resetEditStatus() {
     this.isEditPos = null;
@@ -55,4 +59,14 @@ export class CustomersListComponent implements OnInit{
 
   private resetCustomer = (): CustomerInterface => ({name: '', email: '', mobile: '', location: ''});
 
+  private mergeCustomerProps<T extends CustomerInterface>(original: T, temp: T): T {
+    const result: T = {...original};
+
+    Object.keys((temp)).forEach((key) => {
+      if (temp[key as keyof T]) {
+        result[key as keyof T] = temp[key as keyof T];
+      }
+    });
+     return result;
+  }
 }
